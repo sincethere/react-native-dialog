@@ -7,19 +7,53 @@
 ![ios](https://github.com/honaf/react-native-dialog/raw/master/ios_inputDialog.png) 
 
 
+
+
 ## Installation
 
 First you need to install react-native-dialog:
 
 ```javascript
 $ npm install react-native-dialog --save
+```
+
+**Add Configuration**
+link
+```javascript 
 ($ npm install rnpm --global)
 $ rnpm link react-native-dialog
 ```
 
+If the link fails, manually add
+
+settings.gradle
+```java
+include ':react-native-dialog'
+project(':react-native-dialog').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-dialog/android')
+```
+build.gradle
+```java
+ dependencies {
+    ...
+    compile project(':react-native-dialog')
+}
+```
+MainActivity
+```java
+import com.honaf.dialog.MyDialogPackage;
+ @Override
+    protected List<ReactPackage> getPackages() {
+        return Arrays.<ReactPackage>asList(
+                ...
+                new MyDialogPackage(),
+               );
+
+    }
+```
+
 ## Release Notes
 
- * 1.0.5 
+ * 1.0.7
 
 ## Example
 
@@ -47,3 +81,4 @@ Dialog.prompt("填写资料", null, [{
 
 
 ```
+

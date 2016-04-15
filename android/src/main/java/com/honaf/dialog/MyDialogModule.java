@@ -25,12 +25,9 @@ import com.facebook.react.bridge.ReadableMap;
 public class MyDialogModule extends ReactContextBaseJavaModule
 {
     public ReactContext currentReactContext = null;
-    public  Activity mActivity = null;
-    public MyDialogModule(ReactApplicationContext reactContext,Activity activity) {
+    public MyDialogModule(ReactApplicationContext reactContext) {
         super(reactContext);
         currentReactContext = reactContext;
-        mActivity = activity;
-
     }
     @Override
     public String getName() {
@@ -48,7 +45,7 @@ public class MyDialogModule extends ReactContextBaseJavaModule
         for (int i = 0; i<array.size(); i++ ){
             str[i] = array.getString(i);
         }
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mActivity);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this.getCurrentActivity());
         dialog.setItems(str, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -66,7 +63,7 @@ public class MyDialogModule extends ReactContextBaseJavaModule
             if(map == null){
                 return;
             }
-            Activity context = mActivity;
+            Activity context = this.getCurrentActivity();
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);
             dialog.setTitle(map.getString("title"));
             final AppCompatEditText editText = new AppCompatEditText(context);
