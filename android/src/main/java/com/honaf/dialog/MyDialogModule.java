@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.ViewGroup;
+import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
 
 import com.facebook.react.bridge.Callback;
@@ -64,8 +65,8 @@ public class MyDialogModule extends ReactContextBaseJavaModule
                 return;
             }
             Activity context = this.getCurrentActivity();
-            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-            dialog.setTitle(map.getString("title"));
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+            dialogBuilder.setTitle(map.getString("title"));
             final AppCompatEditText editText = new AppCompatEditText(context);
             editText.setText(map.hasKey("content") ? map.getString("content") : "");
             editText.setSingleLine(true);
@@ -78,7 +79,7 @@ public class MyDialogModule extends ReactContextBaseJavaModule
             layout.setPadding(15, 10,
                     15, 0);
             layout.addView(editText);
-            dialog.setView(layout);
+            dialogBuilder.setView(layout);
 
             ReadableArray array = map.getArray("callbackOrButtons");
             String leftBtn = "确定";
@@ -91,14 +92,14 @@ public class MyDialogModule extends ReactContextBaseJavaModule
                 leftBtn = array.getMap(0).getString("text");
                 rightBtn = array.getMap(1).getString("text");
             }
-            dialog.setPositiveButton(leftBtn, new DialogInterface.OnClickListener() {
+            dialogBuilder.setPositiveButton(leftBtn, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     String text = editText.getText().toString().trim();
                     callback1.invoke(text);
                 }
             });
-            dialog.setNegativeButton(rightBtn, new DialogInterface.OnClickListener() {
+            dialogBuilder.setNegativeButton(rightBtn, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     String text = editText.getText().toString().trim();
@@ -107,7 +108,9 @@ public class MyDialogModule extends ReactContextBaseJavaModule
                     }
                 }
             });
-        dialog.show();
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            dialog.show();
     }
 
 
